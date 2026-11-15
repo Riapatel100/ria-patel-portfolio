@@ -2,7 +2,7 @@ const ARROW = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true
 const projects = (window.PROJECTS || []).filter((p) => !p.draft);
 const link = (p) => `project.html#${encodeURIComponent(p.id)}`;
 const media = (p) => p.image
-  ? `<img src="${p.image}" alt="${p.title}" loading="lazy">`
+  ? `<img src="${p.image}" alt="${p.title}" loading="lazy"${p.imageFit === 'contain' ? ' class="fit-contain"' : ''}>`
   : '<span class="blank">Images coming soon</span>';
 const pad = (n) => String(n).padStart(2, '0');
 

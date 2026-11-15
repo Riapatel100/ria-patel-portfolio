@@ -65,10 +65,14 @@ addEventListener('hashchange', () => location.reload());
       ? `<div class="compare"><table>
           <thead><tr>${s.table.head.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead>
           <tbody>${s.table.rows.map((r, i) => `<tr${i === 0 ? ' class="is-best"' : ''}>
-            <th scope="row">${r[0]}</th><td><span class="verdict verdict--${i}">${r[1]}</span></td><td>${r[2]}</td></tr>`).join('')}</tbody>
+            <th scope="row">${r[0]}</th><td><span class="verdict verdict--${i}">${r[1]}</span></td>${r.slice(2).map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
         </table></div>`
       : '';
-    return `<section><h2>${s.heading}</h2><div>${s.paragraphs.map((t) => `<p>${t}</p>`).join('')}${callouts}${table}${fig}</div></section>`;
+    const figs = s.figures
+      ? `<div class="story__figs">${s.figures.map((f) => `<figure><img src="${f.src}" alt="${f.caption || ''}" loading="lazy"><figcaption>${f.caption || ''}</figcaption></figure>`).join('')}</div>`
+      : '';
+    // tables sit outside the text column so wide ones get the full page width
+    return `<section><h2>${s.heading}</h2><div>${s.paragraphs.map((t) => `<p>${t}</p>`).join('')}${callouts}${figs}${fig}</div>${table}</section>`;
   }).join('');
 
   $('[data-gallery]').innerHTML = (p.gallery || []).map((g) =>

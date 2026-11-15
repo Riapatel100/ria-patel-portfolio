@@ -16,76 +16,184 @@
 //   draft    true hides a project from the site until it's ready
 
 window.PROJECTS = [
+  // From her dissertation report ("Developing innovative materials for lightweight and durable prosthetic devices
+  // through additive manufacturing", BCU, May 2026). All figures are from the report.
   {
     id: '3d-printed-prosthetic-socket',
     title: 'Lightweight 3D-printed prosthetic sockets',
     shortTitle: 'Prosthetic sockets',
     field: 'Prosthetics · BEng dissertation',
     year: '2026',
-    summary: 'Can 3D-printed plastics replace carbon fibre in transtibial prosthetic sockets? I tested three materials in the lab, validated them with FEA and designed a variable-thickness socket in Fusion 360.',
-    tags: ['Prosthetics', 'FEA', '3D printing', 'Materials testing', 'CAD'],
+    summary: 'Can 3D-printed plastics replace carbon fibre in transtibial prosthetic sockets? I tested PA12, PETG and polypropylene to BS ISO standards, validated the results with FEA, and re-engineered a socket in Fusion 360 around the best material.',
+    tags: ['Prosthetics', 'FEA', '3D printing', 'Materials testing', 'BS ISO standards', 'CAD'],
     image: 'images/limb-socket.png',
     fusion: 'https://mail118811.autodesk360.com/g/shares/SH28cd1QT2badd0ea72b3c96e0bec014a0a1',
     facts: {
-      Context: 'BEng dissertation',
+      Context: 'BEng dissertation, Birmingham City University',
       Materials: 'Nylon PA12, PETG, polypropylene',
-      Methods: 'FDM printing, mechanical testing, FEA',
+      Standards: 'BS ISO 527-2, 604, 178',
       Software: 'Fusion 360, SimScale',
     },
-    // headline numbers, straight from the write-up
     stats: [
-      { value: '<1%', label: 'Gap between simulation and lab results in tension (PA12)' },
-      { value: '7.5%', label: 'Gap in three-point bending (PA12)' },
-      { value: '>5', label: 'Safety factor under gait loading (PA12)' },
-      { value: '40–60%', label: 'Potential cost reduction, with production cut from weeks to hours' },
+      { value: '<1%', label: 'Gap between SimScale FEA and lab tensile results for PA12' },
+      { value: '5.41', label: 'PA12 safety factor in the 200 N load case, the highest of the three materials' },
+      { value: '230 MPa', label: 'PA12 compressive strength, more than 3.5× PETG' },
+      { value: '40–60%', label: 'Potential cost reduction versus carbon fibre, with lead times cut from weeks to hours' },
     ],
     story: [
       {
-        heading: 'The brief',
+        heading: 'The problem',
         paragraphs: [
-          'For my BEng dissertation I compared three 3D-printing plastics (Nylon PA12, PETG and polypropylene) as a cheaper, faster alternative to carbon fibre for transtibial prosthetic sockets.',
+          'Most transtibial sockets are still made by carbon fibre lamination: skilled, labour-intensive work that costs £800–£1,500 in materials per socket and takes 3–5 weeks.',
+          '3D printing (FDM) could make sockets faster and cheaper, but no study had compared PA12, PETG and polypropylene under identical printing conditions with standardised testing and FEA validation. That was the gap my dissertation set out to fill.',
         ],
       },
       {
-        heading: 'Testing',
+        heading: 'Test specimens',
         paragraphs: [
-          'I printed test samples with FDM and put them through tensile, bending and compression tests on an Instron universal testing machine, following BS ISO mechanical testing standards (tensile, compression and three-point bending).',
+          'Instead of standard tensile bars, I designed hollow cylindrical specimens (25 mm diameter, 4 mm wall) that behave like a section of socket wall. Every sample was printed on the same machine with identical settings: 80% tri-hexagonal infill, 0.2 mm layers and 0.4 mm extrusion width, so the three materials could be compared fairly.',
         ],
       },
       {
-        heading: 'Design',
+        heading: 'Testing to standards',
         paragraphs: [
-          'In Fusion 360 I designed the socket’s variable wall thickness, with thicker walls (4.4 mm) where the loads are highest and thinner, more flexible walls (3.6 mm) around soft-tissue areas.',
+          'I tested each material on an Instron to British Standards: BS ISO 527-2 (tensile), BS ISO 604 (compression) and BS ISO 178 (three-point bending over a 48 mm span). Every specimen was measured with digital callipers so the stress calculations were accurate.',
         ],
-        callouts: [
-          { value: '4.4 mm', label: 'Wall thickness where the loads are highest' },
-          { value: '3.6 mm', label: 'Thinner, more flexible walls around soft-tissue areas' },
+      },
+      {
+        heading: 'Health & safety',
+        paragraphs: [
+          'All testing followed Birmingham City University’s Faculty Safety Policy. PPE was worn throughout, printing was ventilated to control airborne particulates, and all equipment was PAT tested. No human or animal subjects were involved, so no ethical approval was needed.',
         ],
       },
       {
         heading: 'Simulation',
         paragraphs: [
-          'I simulated each test in SimScale to check the results against my lab data. For Nylon PA12 the simulation matched the real tests to within 1% in tension and 7.5% in bending, and it had a safety factor above 5 under gait loading.',
+          'I modelled every test in SimScale using my measured material properties, on a tetrahedral mesh checked for independence (results at 3 mm and 5 mm elements agreed within 2%).',
+          'For PA12 the simulation matched the lab to within 1% in tension and 7.5% in bending. The comparison also showed where a linear elastic model stops working: PETG was within 10–15%, but polypropylene was out by more than 100% because it is so ductile, so I recommended non-linear models for it in future work.',
         ],
         figure: {
           src: 'images/socket-fea-pa12.png',
-          caption: 'FEA stress plots for the PA12 socket in SimScale: tensile, compression and three-point bend, with simulated vs experimental results.',
+          caption: 'FEA stress plots for PA12 in SimScale: tensile, compression and three-point bend, with simulated vs experimental results.',
         },
       },
       {
-        heading: 'Result',
+        heading: 'Socket design',
         paragraphs: [
-          'Nylon PA12 performed best overall and is my recommended material for the main load-bearing areas of the socket. PETG suits flexible zones, and polypropylene is only suitable for soft-contact areas.',
-          'Printing sockets this way could cut costs by 40–60% and reduce production time from weeks to hours.',
+          'I took an open-access socket model from GrabCAD and re-engineered it in Fusion 360 for printed PA12. Its uniform walls (under 3 mm) became variable-thickness sections: thicker at the patellar tendon, which takes the highest compressive loads during stance (800–1,200 N), and thinner over soft-tissue areas such as the fibular head for comfort. The distal base is around 3.7 mm, balancing strength and print time.',
+        ],
+        callouts: [
+          { value: '4.4 mm', label: 'Patellar region, where compressive loads peak' },
+          { value: '3.6 mm', label: 'Soft-tissue areas, for compliance and comfort' },
+        ],
+        figures: [
+          { src: 'images/socket-wall-4-4mm.png', caption: '4.4 mm: patellar region' },
+          { src: 'images/socket-wall-3-6mm.png', caption: '3.6 mm: lateral/medial walls' },
+          { src: 'images/socket-wall-distal.png', caption: '≈3.7 mm: distal base' },
+        ],
+      },
+      {
+        heading: 'Results',
+        paragraphs: [
+          'PA12 was the strongest all-round material and is my recommendation for the main load-bearing areas. PETG had the highest flexural strength, which suits it to transitional zones that need some flex. Polypropylene was the most ductile, stretching to 457% before breaking, but too weak for load-bearing parts, so it belongs only at soft-contact interfaces.',
+          'Swapping carbon fibre lamination for FDM-printed PA12 or PETG could cut socket production costs by 40–60% and lead times from weeks to hours, which matters most for clinics with limited resources.',
         ],
         table: {
-          head: ['Material', 'Verdict', 'Where it belongs in the socket'],
+          head: ['Material', 'Verdict', 'Tensile (MPa)', 'Flexural (MPa)', 'Compressive (MPa)', 'Strain at break', 'Best zone'],
           rows: [
-            ['Nylon PA12', 'Recommended', 'Main load-bearing areas'],
-            ['PETG', 'Suitable', 'Flexible zones'],
-            ['Polypropylene', 'Limited', 'Soft-contact areas only'],
+            ['Nylon PA12', 'Recommended', '42.34', '45.91', '230.46', '4.94%', 'Primary load-bearing'],
+            ['PETG', 'Suitable', '34.25', '56.93', '62.90', '7.01%', 'Transitional / flexible'],
+            ['Polypropylene', 'Limited', '13.25', '12.23', '67.50', '457%', 'Compliant interface'],
           ],
         },
+      },
+      {
+        heading: 'Next steps',
+        paragraphs: [
+          'Fatigue testing under cyclic gait loads, non-linear material models for polypropylene, testing the effects of humidity, temperature and UV, and variable-density infill to improve the strength-to-weight ratio further.',
+        ],
+      },
+    ],
+    gallery: [
+      { src: 'images/socket-render-1.png', caption: 'Re-engineered socket in Fusion 360' },
+      { src: 'images/socket-render-2.png', caption: 'Re-engineered socket in Fusion 360' },
+      { src: 'images/socket-render-3.png', caption: 'Re-engineered socket in Fusion 360' },
+    ],
+  },
+
+  // From her ENG6083 technical report and MATLAB code. All figures are from the report; the code was checked and uses
+  // no toolbox functions (no regionprops, bwlabel, imbinarize etc.).
+  {
+    id: 'histology-image-analysis',
+    title: 'Automated histology image analysis in MATLAB',
+    shortTitle: 'Histology analysis',
+    field: 'Medical imaging · MATLAB',
+    year: '2026',
+    summary: 'A MATLAB pipeline, written without toolbox shortcuts, that finds and measures cell nuclei across 40 H&E-stained tissue slides. On the validation image it detected 316 nuclei against 312 counted by hand: 98.7% agreement.',
+    tags: ['MATLAB', 'Image processing', 'Medical imaging', 'Algorithm design', 'Validation'],
+    image: 'images/histology-validation.png',
+    imageFit: 'contain',
+    imageCaption: 'Validation: 312 nuclei counted by hand vs 316 detected by the pipeline',
+    facts: {
+      Context: 'Medical Image Processing module (ENG6083)',
+      Data: '40 H&amp;E-stained slides',
+      Software: 'MATLAB, no toolbox functions',
+      Training: 'MATLAB and Image Processing Onramp',
+    },
+    stats: [
+      { value: '98.7%', label: 'Agreement with a manual count on the validation image (316 detected vs 312)' },
+      { value: '40', label: 'Slides processed automatically in one batch' },
+      { value: '3.6×', label: 'Fewer false positives after calibrating the threshold' },
+      { value: '6', label: 'Hand-written MATLAB functions, from stain separation to feature extraction' },
+    ],
+    story: [
+      {
+        heading: 'The problem',
+        paragraphs: [
+          'H&amp;E staining is the standard way to look at tissue: haematoxylin stains cell nuclei blue-purple and eosin stains the surrounding tissue pink. The size and shape of nuclei can signal disease, but counting and measuring them by hand across whole slide sets is slow and varies between observers.',
+          'The task: build a pipeline that segments nuclei automatically across 40 slides and produces measurements that hold up against biological reference values.',
+        ],
+      },
+      {
+        heading: 'Method',
+        paragraphs: [
+          'Rather than relying on MATLAB’s toolbox functions, I wrote each stage myself: a 3×3 smoothing filter; Ruifrok–Johnston colour deconvolution to separate the two stains; a calibrated threshold to find nuclei; a cross-shaped erosion to split touching nuclei; and a flood-fill labelling routine that measures each nucleus’s area, eccentricity and orientation from its pixel moments.',
+        ],
+        figures: [
+          { src: 'images/histology-tissue-1.png', caption: 'Original slide and segmented nuclei' },
+          { src: 'images/histology-tissue-2.png', caption: 'Larger stromal nuclei, correctly separated' },
+          { src: 'images/histology-tissue-3.png', caption: 'Mixed epithelial and stromal tissue' },
+        ],
+      },
+      {
+        heading: 'Calibration',
+        paragraphs: [
+          'The threshold setting mattered most. At a multiplier of 1.0, collagen in the stroma was being counted as nuclei, giving an unrealistic mean of 3,921 per image. Raising it to 1.2 cut false positives 3.6-fold, to a mean of 1,089, in line with published ranges.',
+          'I also tested Otsu’s method and watershed separation, and rejected both: Otsu mislabelled dense stroma on unusually stained slides, and watershed over-split elongated nuclei.',
+        ],
+      },
+      {
+        heading: 'Finding a bug',
+        paragraphs: [
+          'During development I noticed the tissue-composition result looked wrong. The calculation was using only the last image instead of all 40, giving a nuclei fraction of 29.16%. Accumulating pixel counts across the whole batch fixed it: 14.94% nuclei and 85.06% stroma.',
+        ],
+        figure: {
+          src: 'images/histology-stats.png',
+          caption: 'Nuclei count for each of the 40 slides (dashed line: mean of 1,089) and overall tissue composition.',
+        },
+      },
+      {
+        heading: 'Validation',
+        paragraphs: [
+          'I counted the nuclei in one image by hand (312) and compared that with the pipeline (316): 98.7% agreement, inside the 90–99% range reported for threshold-based methods.',
+          'A t-test between the two halves of the batch (t = 1.13, p = 0.27) showed the pipeline performed consistently across all 40 slides, and the nuclear shape measurements fell within published reference values for benign stromal tissue.',
+        ],
+      },
+      {
+        heading: 'Next steps',
+        paragraphs: [
+          'Adaptive (Sauvola) thresholding to cope with uneven staining and lighting, and pixel-level Dice scoring against full manual annotations.',
+        ],
       },
     ],
     gallery: [],
